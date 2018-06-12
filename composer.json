@@ -3,6 +3,12 @@
     "description": "",
     "license": "MIT",
     "type": "project",
+    "authors": [
+        {
+            "name": "Takamichi Urata",
+            "email": "taka@seraphimis.net"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",

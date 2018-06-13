@@ -32,6 +32,7 @@
             "database/factories"
         ],
         "psr-4": {
+            "Accueil\\": "src/",
             "App\\": "app/"
         }
     },

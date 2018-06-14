@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://accueil.test'),
+    'url' => env('APP_SCHEME', 'http') . '://' . env('APP_DOMAIN', 'accueil.test'),
 
     /*
     |--------------------------------------------------------------------------

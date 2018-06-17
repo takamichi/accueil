@@ -1,0 +1,88 @@
+version: '3.6'
+
+services:
+
+  accueil:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: takamichi/accueil:dev
+    environment:
+      TZ: ${APP_TIMEZONE}
+      PHP_ERROR_REPORTING: "E_ALL"
+      PHP_DISPLAY_ERRORS: "On"
+      PHP_DISPLAY_STARTUP_ERRORS: "On"
+      PHP_OPCACHE_ENABLE: 0
+      PHP_XDEBUG_REMOTE_HOST: "host.docker.internal"
+      PHP_IDE_CONFIG: "serverName=docker"
+    expose:
+      - "9000"
+    volumes:
+      - code:${APP_ROOT}:cached
+      - ./environment/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./environment/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+      - ./environment/dev/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini:ro
+    networks:
+      accueil-network:
+
+  web:
+    image: nginx:1.15.0-alpine
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+    environment:
+      TZ: ${APP_TIMEZONE}
+    volumes:
+      - code:${APP_ROOT}:cached
+      - ./environment/dev/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./environment/dev/nginx-site.conf:/etc/nginx/nginx-site.conf:ro
+      - http-log:/var/log/nginx
+    depends_on:
+      - accueil
+    networks:
+      accueil-network:
+        aliases:
+          - ${APP_DOMAIN}
+
+  db:
+    image: mysql:5.7.22
+    expose:
+      - "3306"
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      TZ: ${APP_TIMEZONE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      #- ./environment/dev/my.cnf:/etc/my.cnf:ro
+      - ./environment/dev/sqls:/docker-entrypoint-initdb.d:ro
+      - db-data:/var/lib/mysql
+      - db-log:/var/log/mysql
+    networks:
+      accueil-network:
+    stop_grace_period: 1m
+
+networks:
+  accueil-network:
+    driver: bridge
+
+volumes:
+  code:
+    driver_opts:
+      type: none
+      device: ${PWD}
+      o: bind
+  http-log:
+    driver: local
+  db-data:
+    driver: local
+  db-log:
+    driver: local
+  log-data:
+    driver: local
+  cache:
+    driver: local

@@ -2,4 +2,16 @@
 *.css linguist-vendored
 *.scss linguist-vendored
 *.js linguist-vendored
+
+*.php diff=php encoding=utf-8 eol=lf
+*.tpl diff=php encoding=utf-8 eol=lf
+*.js encoding=utf-8 eol=lf
+*.css encoding=utf-8 eol=lf
+*.scss encoding=utf-8 eol=lf
+*.sh text encoding=utf-8 eol=lf
+*.bat encoding=cp932 eol=crlf
+
+.env.example export-ignore
+CONTRIBUTING.md export-ignore
 CHANGELOG.md export-ignore
+README.md export-ignore

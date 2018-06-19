@@ -49,6 +49,9 @@ RUN set -xe; \
         ca-certificates \
         tzdata
 
+ARG VERSION="dev"
+ARG CODE_REVISION="no-rev"
+
 ENV APP_ROOT="/var/www/html" \
     EXT_AMQP_VER="1.9.3" \
     EXT_APCU_VER="5.1.11" \

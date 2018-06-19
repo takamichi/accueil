@@ -245,4 +245,7 @@ WORKDIR ${APP_ROOT}
 RUN set -xe; \
     : "Fix directory permissions ..."; \
     chmod -R 775 ${APP_ROOT}; \
-    chown -R www-data:www-data ${APP_ROOT};
+    chown -R www-data:www-data ${APP_ROOT}; \
+    : "Set version and code revision files ..."; \
+    echo ${VERSION} > ${APP_ROOT}/VERSION; \
+    echo ${CODE_REVISION} > ${APP_ROOT}/REVISION;

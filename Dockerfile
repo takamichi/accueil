@@ -52,8 +52,7 @@ RUN set -xe; \
 ARG VERSION="dev"
 ARG CODE_REVISION="no-rev"
 
-ENV APP_ROOT="/var/www/html" \
-    EXT_AMQP_VER="1.9.3" \
+ENV EXT_AMQP_VER="1.9.3" \
     EXT_APCU_VER="5.1.11" \
     EXT_AST_VER="0.1.6" \
     EXT_DS_VER="1.2.4" \
@@ -107,6 +106,20 @@ ENV APP_ROOT="/var/www/html" \
     PHP_OPCACHE_VALIDATE_PERMISSION="0" \
     PHP_OPCACHE_VALIDATE_ROOT="0" \
     PHP_OPCACHE_OPT_DEBUG_LEVEL="0"
+
+ENV APP_ENV="local" \
+    APP_KEY="" \
+    APP_DEBUG="false" \
+    APP_DOMAIN="" \
+    APP_SCHEME="https" \
+    APP_LOCALE="ja" \
+    APP_TIMEZONE="Asia/Tokyo" \
+    APP_ROOT="/var/www/html" \
+    DB_HOST="" \
+    DB_PORT="3306" \
+    DB_DATABASE="" \
+    DB_USERNAME="" \
+    DB_PASSWORD=""
 
 RUN set -xe; \
     apk add --update --no-cache -t .php-rundeps \

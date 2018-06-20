@@ -7,6 +7,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: takamichi/accueil:dev
+    env_file: .env
     environment:
       TZ: ${APP_TIMEZONE}
       PHP_ERROR_REPORTING: "E_ALL"

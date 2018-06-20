@@ -251,6 +251,10 @@ RUN set -xe; \
         /tmp/* \
         /var/cache/apk/*;
 
+COPY ./environment/entrypoint /usr/local/bin/
+ENTRYPOINT ["entrypoint"]
+CMD ["php-fpm"]
+
 COPY ./environment/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 

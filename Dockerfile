@@ -2,7 +2,9 @@ FROM composer:1.6.5 AS composer
 
 RUN set -xe; \
     : "Install Composer plugin \"prestissimo\" ..."; \
-    composer global require hirak/prestissimo
+    composer global require hirak/prestissimo;
+
+ENV APP_ROOT="/var/www/html"
 
 COPY . /app
 
@@ -18,27 +20,22 @@ RUN set -xe; \
         --no-scripts \
         --optimize-autoloader \
         --prefer-dist; \
+    : "Copy application files ..."; \
+    cp -r /app/app ${APP_ROOT}/; \
+    cp -r /app/bootstrap ${APP_ROOT}/; \
+    cp -r /app/config ${APP_ROOT}/; \
+    cp -r /app/database ${APP_ROOT}/; \
+    cp -r /app/public ${APP_ROOT}/; \
+    cp -r /app/resources ${APP_ROOT}/; \
+    cp -r /app/src ${APP_ROOT}/; \
+    cp -r /app/storage ${APP_ROOT}/; \
+    cp -r /app/vendor ${APP_ROOT}/; \
+    cp /app/artisan ${APP_ROOT}/; \
     : "Cleanup files and directories ..."; \
     find \
-        "bootstrap/cache/" \
-        "storage/" \
-        -type f -exec rm -f {} \; ; \
-    rm -rf \
-        ".idea/" \
-        "tests/" \
-        ".dockerignore" \
-        ".gitattributes" \
-        ".gitignore" \
-        ".composer.json" \
-        ".composer.lock" \
-        "docker-compose.yml" \
-        "docker-compose.yml.example" \
-        "Dockerfile" \
-        "package.json" \
-        "phpunit.xml" \
-        "README.md" \
-        "server.php" \
-        "webpack.mix.js"
+        "${APP_ROOT}/bootstrap/cache/" \
+        "${APP_ROOT}/storage/" \
+        -type f -exec rm -f {} \; ;
 
 
 FROM php:7.2.6-fpm-alpine3.7
@@ -258,7 +255,7 @@ CMD ["php-fpm"]
 COPY ./environment/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 
-COPY --from=composer /app ${APP_ROOT}
+COPY --from=composer ${APP_ROOT} ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 
 RUN set -xe; \

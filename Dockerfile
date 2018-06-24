@@ -142,7 +142,6 @@ RUN set -xe; \
         mariadb-client \
         openssh-client \
         patch \
-        postgresql-client \
         rabbitmq-c \
         yaml; \
     apk add --update --no-cache -t .build-deps \
@@ -162,7 +161,6 @@ RUN set -xe; \
         libtool \
         libxslt-dev \
         pcre-dev \
-        postgresql-dev \
         rabbitmq-c-dev \
         yaml-dev; \
     \
@@ -181,7 +179,6 @@ RUN set -xe; \
         opcache \
         pcntl \
         pdo_mysql \
-        pdo_pgsql \
         soap \
         sockets \
         xmlrpc \

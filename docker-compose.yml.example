@@ -13,6 +13,8 @@ services:
       PHP_ERROR_REPORTING: "E_ALL"
       PHP_DISPLAY_ERRORS: "On"
       PHP_DISPLAY_STARTUP_ERRORS: "On"
+      PHP_ASSERTIONS: "1"
+      PHP_ASSERT_EXCEPTION: "1"
       PHP_OPCACHE_ENABLE: 0
       PHP_XDEBUG_REMOTE_HOST: "host.docker.internal"
       PHP_IDE_CONFIG: "serverName=docker"

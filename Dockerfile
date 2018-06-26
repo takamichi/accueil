@@ -9,6 +9,8 @@ ENV APP_ROOT="/var/www/html"
 COPY . /app
 
 RUN set -xe; \
+    : "Create APP_ROOT directory ..."; \
+    mkdir -p ${APP_ROOT}; \
     : "Validate composer.json ..."; \
     composer validate --strict --no-check-publish --no-interaction; \
     : "Install dependency packages ..."; \

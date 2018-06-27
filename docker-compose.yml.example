@@ -21,7 +21,7 @@ services:
     expose:
       - "9000"
     volumes:
-      - code:${APP_ROOT}:cached
+      - .:${APP_ROOT}:cached
       - ./environment/php.ini:/usr/local/etc/php/php.ini:ro
       - ./environment/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
       - ./environment/dev/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini:ro
@@ -37,10 +37,9 @@ services:
     environment:
       TZ: ${APP_TIMEZONE}
     volumes:
-      - code:${APP_ROOT}:cached
+      - .:${APP_ROOT}:cached
       - ./environment/dev/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./environment/dev/nginx-site.conf:/etc/nginx/nginx-site.conf:ro
-      - http-log:/var/log/nginx
     depends_on:
       - accueil
     networks:
@@ -74,18 +73,9 @@ networks:
     driver: bridge
 
 volumes:
-  code:
-    driver_opts:
-      type: none
-      device: ${PWD}
-      o: bind
-  http-log:
-    driver: local
   db-data:
     driver: local
   db-log:
-    driver: local
-  log-data:
     driver: local
   cache:
     driver: local

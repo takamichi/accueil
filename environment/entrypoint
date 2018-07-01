@@ -6,22 +6,24 @@ if [ "${1#-}" != "$1" ]; then
     set -- php-fpm "$@"
 fi
 
-: "Cleanup ..." && {
-    php artisan cache:clear --quiet --no-interaction
-    php artisan config:clear --quiet --no-interaction
-    php artisan route:clear --quiet --no-interaction
-    php artisan view:clear --quiet --no-interaction
-}
+if [ "$1" = "php-fpm" ]; then
+    : "Cleanup ..." && {
+        php artisan cache:clear --quiet --no-interaction
+        php artisan config:clear --quiet --no-interaction
+        php artisan route:clear --quiet --no-interaction
+        php artisan view:clear --quiet --no-interaction
+    }
 
-: "Initialize ..." && {
-    php artisan package:discover --quiet --no-interaction
-    php artisan storage:link --quiet --no-interaction
+    : "Initialize ..." && {
+        php artisan package:discover --quiet --no-interaction
+        php artisan storage:link --quiet --no-interaction
 
-    if [ "${APP_ENV:=""}" = "production" ]; then
-        php artisan config:cache --quiet --no-interaction
-        php artisan route:cache --quiet --no-interaction
-        php artisan view:cache --quiet --no-interaction
-    fi
-}
+        if [ "${APP_ENV:=""}" = "production" ]; then
+            php artisan config:cache --quiet --no-interaction
+            php artisan route:cache --quiet --no-interaction
+            php artisan view:cache --quiet --no-interaction
+        fi
+    }
+fi
 
 exec "$@"

@@ -66,7 +66,7 @@ VOLUME ["/tmp"]
 # Step 3: Accueil docker image
 #
 
-FROM php:7.2.6-fpm-alpine3.7
+FROM php:7.2.7-fpm-alpine3.7
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \

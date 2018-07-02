@@ -22,11 +22,7 @@ RUN set -xe; \
 # Step 2: PHP dependency packages
 #
 
-FROM composer:1.6.5 AS composer
-
-RUN set -xe; \
-    : "Install Composer plugin \"prestissimo\" ..."; \
-    composer global require hirak/prestissimo;
+FROM takamichi/composer:latest AS composer
 
 ENV APP_ROOT="/var/www/html"
 
@@ -62,6 +58,8 @@ RUN set -xe; \
         "${APP_ROOT}/bootstrap/cache/" \
         "${APP_ROOT}/storage/" \
         -type f -exec rm -f {} \; ;
+
+VOLUME ["/tmp"]
 
 
 #

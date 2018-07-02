@@ -1,3 +1,27 @@
+#
+# Step 1: dockerize
+#
+
+FROM alpine:latest AS dockerize
+
+RUN set -xe; \
+    apk add --update --no-cache \
+        ca-certificates \
+        openssl
+
+ENV DOCKERIZE_VERSION v0.6.1
+RUN set -xe; \
+    : "Download \"dockerize\" ..."; \
+    wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz; \
+    tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz; \
+    chmod +x /usr/local/bin/dockerize; \
+    rm dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz;
+
+
+#
+# Step 2: PHP dependency packages
+#
+
 FROM composer:1.6.5 AS composer
 
 RUN set -xe; \
@@ -39,6 +63,10 @@ RUN set -xe; \
         "${APP_ROOT}/storage/" \
         -type f -exec rm -f {} \; ;
 
+
+#
+# Step 3: Accueil docker image
+#
 
 FROM php:7.2.6-fpm-alpine3.7
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
@@ -248,15 +276,13 @@ RUN set -xe; \
         /var/cache/apk/*;
 
 COPY ./environment/entrypoint /usr/local/bin/
-ENTRYPOINT ["entrypoint"]
-CMD ["php-fpm"]
-
 COPY ./environment/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 
+COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
 COPY --from=composer ${APP_ROOT} ${APP_ROOT}
-WORKDIR ${APP_ROOT}
 
+WORKDIR ${APP_ROOT}
 RUN set -xe; \
     : "Fix directory permissions ..."; \
     chmod -R 775 ${APP_ROOT}; \
@@ -264,3 +290,8 @@ RUN set -xe; \
     : "Set version and code revision files ..."; \
     echo ${VERSION} > ${APP_ROOT}/VERSION; \
     echo ${CODE_REVISION} > ${APP_ROOT}/REVISION;
+
+ENTRYPOINT ["entrypoint"]
+CMD ["php-fpm"]
+
+EXPOSE 9000

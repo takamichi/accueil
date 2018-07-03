@@ -88,6 +88,7 @@ ENV EXT_AMQP_VER="1.9.3" \
     EXT_MEMCACHED_VER="3.0.4" \
     EXT_MONGODB_VER="1.4.0" \
     EXT_OAUTH_VER="2.0.2" \
+    EXT_SWOOLE_VER="4.0.1" \
     EXT_REDIS_VER="3.1.6" \
     EXT_TIDEWAYS_XHPROF_VER="4.1.6" \
     EXT_XDEBUG_VER="2.6.0" \
@@ -231,8 +232,10 @@ RUN set -xe; \
         "grpc-${EXT_GRPC_VER}" \
         "igbinary-${EXT_IGBINARY_VER}" \
         "imagick-${EXT_IMAGICK_VER}" \
+        inotify \
         "memcached-${EXT_MEMCACHED_VER}" \
         "mongodb-${EXT_MONGODB_VER}" \
+        "swoole-${EXT_SWOOLE_VER}" \
         "oauth-${EXT_OAUTH_VER}" \
         "redis-${EXT_REDIS_VER}" \
         "xdebug-${EXT_XDEBUG_VER}" \
@@ -245,12 +248,14 @@ RUN set -xe; \
         ds \
         igbinary \
         imagick \
+        inotify \
         geoip \
         grpc \
         memcached \
         mongodb \
         oauth \
         redis \
+        swoole \
         yaml; \
     \
     : "Blackfire extension ..."; \

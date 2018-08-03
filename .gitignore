@@ -13,6 +13,8 @@ yarn-error.log
 .env
 
 /.php_cs.cache
+/.php_cs
+/phpstan.neon
 
 /_ide_helper.php
 /_ide_helper_models.php

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Broadcast;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
@@ -14,6 +14,11 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Broadcast::routes();
+        $this->getManager()->routes();
+    }
+
+    private function getManager(): BroadcastManager
+    {
+        return $this->app->get(BroadcastManager::class);
     }
 }

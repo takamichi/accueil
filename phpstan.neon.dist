@@ -1,0 +1,7 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    bootstrap: %currentWorkingDirectory%/bootstrap/app.php
+    excludes_analyse:
+        - %currentWorkingDirectory%/_ide_helper.php
+        - %currentWorkingDirectory%/database/*
+        - %currentWorkingDirectory%/vendor/*

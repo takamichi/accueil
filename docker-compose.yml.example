@@ -68,6 +68,13 @@ services:
       accueil-network:
     stop_grace_period: 1m
 
+  composer:
+    image: takamichi/composer:latest
+    working_dir: ${APP_ROOT}
+    command: 'composer install --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist'
+    volumes:
+      - .:${APP_ROOT}:cached
+
 networks:
   accueil-network:
     driver: bridge

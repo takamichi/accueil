@@ -66,7 +66,7 @@ VOLUME ["/tmp"]
 # Step 3: Accueil docker image
 #
 
-FROM php:7.2.7-fpm-alpine3.7
+FROM php:7.2.10-fpm-alpine3.8
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \
@@ -78,20 +78,20 @@ ARG VERSION="dev"
 ARG CODE_REVISION="no-rev"
 
 ENV EXT_AMQP_VER="1.9.3" \
-    EXT_APCU_VER="5.1.11" \
+    EXT_APCU_VER="5.1.12" \
     EXT_AST_VER="0.1.6" \
-    EXT_DS_VER="1.2.4" \
+    EXT_DS_VER="1.2.6" \
     EXT_GEOIP_VER="1.1.1" \
-    EXT_GRPC_VER="1.10.0" \
-    EXT_IGBINARY_VER="2.0.5" \
+    EXT_GRPC_VER="1.15.0" \
+    EXT_IGBINARY_VER="2.0.7" \
     EXT_IMAGICK_VER="3.4.3" \
     EXT_MEMCACHED_VER="3.0.4" \
-    EXT_MONGODB_VER="1.4.0" \
+    EXT_MONGODB_VER="1.5.3" \
     EXT_OAUTH_VER="2.0.2" \
     EXT_SWOOLE_VER="4.0.1" \
-    EXT_REDIS_VER="3.1.6" \
+    EXT_REDIS_VER="4.1.1" \
     EXT_TIDEWAYS_XHPROF_VER="4.1.6" \
-    EXT_XDEBUG_VER="2.6.0" \
+    EXT_XDEBUG_VER="2.6.1" \
     EXT_YAML_VER="2.0.2" \
     PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT" \
     PHP_MAX_INPUT_TIME="60" \

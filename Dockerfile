@@ -235,7 +235,7 @@ RUN set -xe; \
         inotify \
         "memcached-${EXT_MEMCACHED_VER}" \
         "mongodb-${EXT_MONGODB_VER}" \
-        "swoole-${EXT_SWOOLE_VER}" \
+#        "swoole-${EXT_SWOOLE_VER}" \
         "oauth-${EXT_OAUTH_VER}" \
         "redis-${EXT_REDIS_VER}" \
         "xdebug-${EXT_XDEBUG_VER}" \
@@ -255,7 +255,7 @@ RUN set -xe; \
         mongodb \
         oauth \
         redis \
-        swoole \
+#        swoole \
         yaml; \
     \
     : "Blackfire extension ..."; \

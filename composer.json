@@ -13,13 +13,14 @@
         "php": "^7.2",
         "cakephp/chronos": "^1.1",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "php-ds/php-ds": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
         "barryvdh/laravel-ide-helper": "^2.4",
+        "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mediact/dependency-guard": "^1.0",

@@ -39,13 +39,13 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path(PHP_SAPI === 'cli' ? 'logs/artisan.log' : 'logs/laravel.log'),
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path(PHP_SAPI === 'cli' ? 'logs/artisan.log' : 'logs/laravel.log'),
             'level' => 'debug',
             'days' => 7,
         ],

@@ -66,7 +66,7 @@ VOLUME ["/tmp"]
 # Step 3: Accueil docker image
 #
 
-FROM php:7.2.11-fpm-alpine3.8
+FROM php:7.2.12-fpm-alpine3.8
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \
@@ -79,11 +79,11 @@ ARG CODE_REVISION="no-rev"
 
 ENV EXT_AMQP_VER="1.9.3" \
     EXT_APCU_VER="5.1.12" \
-    EXT_AST_VER="0.1.6" \
+    EXT_AST_VER="1.0.0" \
     EXT_DS_VER="1.2.6" \
     EXT_GEOIP_VER="1.1.1" \
-    EXT_GRPC_VER="1.15.0" \
-    EXT_IGBINARY_VER="2.0.7" \
+    EXT_GRPC_VER="1.16.0" \
+    EXT_IGBINARY_VER="2.0.8" \
     EXT_IMAGICK_VER="3.4.3" \
     EXT_MEMCACHED_VER="3.0.4" \
     EXT_MONGODB_VER="1.5.3" \

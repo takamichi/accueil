@@ -223,6 +223,7 @@ RUN set -xe; \
     \
     : "PECL extensions ..."; \
     pecl config-set php_ini "${PHP_INI_DIR}/php.ini"; \
+    pecl channel-update pecl.php.net; \
     pecl install \
         "amqp-${EXT_AMQP_VER}" \
         "apcu-${EXT_APCU_VER}" \

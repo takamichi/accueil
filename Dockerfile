@@ -81,18 +81,15 @@ ENV EXT_AMQP_VER="1.9.3" \
     EXT_APCU_VER="5.1.12" \
     EXT_AST_VER="1.0.0" \
     EXT_DS_VER="1.2.6" \
-    EXT_GEOIP_VER="1.1.1" \
     EXT_GRPC_VER="1.16.0" \
     EXT_IGBINARY_VER="2.0.8" \
-    EXT_IMAGICK_VER="3.4.3" \
     EXT_MEMCACHED_VER="3.0.4" \
     EXT_MONGODB_VER="1.5.3" \
     EXT_OAUTH_VER="2.0.2" \
-    EXT_SWOOLE_VER="4.0.1" \
-    EXT_REDIS_VER="4.1.1" \
+    EXT_REDIS_VER="4.2.0" \
     EXT_TIDEWAYS_XHPROF_VER="4.1.6" \
     EXT_XDEBUG_VER="2.6.1" \
-    EXT_YAML_VER="2.0.2" \
+    EXT_YAML_VER="2.0.4" \
     PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT" \
     PHP_MAX_INPUT_TIME="60" \
     PHP_OUTPUT_BUFFERING="4096" \
@@ -155,10 +152,8 @@ RUN set -xe; \
         fcgi \
         findutils \
         freetype \
-        geoip \
         gmp \
         icu-libs \
-        imagemagick \
         jpegoptim \
         libbz2 \
         libjpeg-turbo \
@@ -179,10 +174,8 @@ RUN set -xe; \
         build-base \
         bzip2-dev \
         freetype-dev \
-        geoip-dev \
         gmp-dev \
         icu-dev \
-        imagemagick-dev \
         jpeg-dev \
         libjpeg-turbo-dev \
         libmemcached-dev \
@@ -201,8 +194,6 @@ RUN set -xe; \
     docker-php-ext-install "-j${NPROC}" \
         bcmath \
         bz2 \
-        calendar \
-        exif \
         gmp \
         intl \
         opcache \
@@ -229,14 +220,11 @@ RUN set -xe; \
         "apcu-${EXT_APCU_VER}" \
         "ast-${EXT_AST_VER}" \
         "ds-${EXT_DS_VER}" \
-        "geoip-${EXT_GEOIP_VER}" \
         "grpc-${EXT_GRPC_VER}" \
         "igbinary-${EXT_IGBINARY_VER}" \
-        "imagick-${EXT_IMAGICK_VER}" \
         inotify \
         "memcached-${EXT_MEMCACHED_VER}" \
         "mongodb-${EXT_MONGODB_VER}" \
-#        "swoole-${EXT_SWOOLE_VER}" \
         "oauth-${EXT_OAUTH_VER}" \
         "redis-${EXT_REDIS_VER}" \
         "xdebug-${EXT_XDEBUG_VER}" \
@@ -248,15 +236,12 @@ RUN set -xe; \
         ast \
         ds \
         igbinary \
-        imagick \
         inotify \
-        geoip \
         grpc \
         memcached \
         mongodb \
         oauth \
         redis \
-#        swoole \
         yaml; \
     \
     : "Blackfire extension ..."; \

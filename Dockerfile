@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1.0-experimental
+
 #
 # Step 1: dockerize
 #
@@ -28,7 +30,8 @@ ENV APP_ROOT="/var/www/html"
 
 COPY . /app
 
-RUN set -xe; \
+RUN --mount=type=cache,target=/tmp/cache \
+    set -xe; \
     : "Create APP_ROOT directory ..."; \
     mkdir -p ${APP_ROOT}; \
     : "Validate composer.json ..."; \

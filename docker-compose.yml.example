@@ -17,7 +17,7 @@ services:
       PHP_ASSERT_EXCEPTION: "1"
       PHP_OPCACHE_ENABLE: 0
       PHP_XDEBUG_REMOTE_HOST: "host.docker.internal"
-      PHP_IDE_CONFIG: "serverName=docker"
+      #PHP_IDE_CONFIG: "serverName="
     expose:
       - "9000"
     volumes:

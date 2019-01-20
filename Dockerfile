@@ -404,6 +404,7 @@ RUN set -xe; \
 COPY ./environment/entrypoint /usr/local/bin/
 COPY ./environment/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY ./environment/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
 COPY --from=composer ${APP_ROOT} ${APP_ROOT}
@@ -420,4 +421,4 @@ RUN set -xe; \
 ENTRYPOINT ["entrypoint"]
 CMD ["php-fpm"]
 
-EXPOSE 9000
+EXPOSE 80

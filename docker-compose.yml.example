@@ -17,7 +17,7 @@ services:
       PHP_ASSERT_EXCEPTION: "1"
       PHP_OPCACHE_ENABLE: 0
       PHP_XDEBUG_REMOTE_HOST: "host.docker.internal"
-      PHP_IDE_CONFIG: "serverName=docker"
+      #PHP_IDE_CONFIG: "serverName="
     expose:
       - "9000"
     volumes:
@@ -25,23 +25,6 @@ services:
       - ./environment/php.ini:/usr/local/etc/php/php.ini:ro
       - ./environment/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
       - ./environment/dev/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini:ro
-    networks:
-      accueil-network:
-
-  web:
-    image: nginx:1.15-alpine
-    expose:
-      - "80"
-    ports:
-      - "80:80"
-    environment:
-      TZ: ${APP_TIMEZONE}
-    volumes:
-      - .:${APP_ROOT}:cached
-      - ./environment/dev/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./environment/dev/nginx-site.conf:/etc/nginx/nginx-site.conf:ro
-    depends_on:
-      - accueil
     networks:
       accueil-network:
         aliases:

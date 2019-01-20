@@ -26,4 +26,4 @@ if [ "$1" = "php-fpm" ]; then
     }
 fi
 
-exec "$@"
+exec "$@" & exec nginx -g "daemon off;"

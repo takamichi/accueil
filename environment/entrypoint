@@ -1,12 +1,24 @@
-#!/usr/bin/env sh
+#!/bin/sh
+
 set -e
 
-# first arg is `-f` or `--some-option`
-if [ "${1#-}" != "$1" ]; then
-    set -- php-fpm "$@"
-fi
+ACCUEIL_cmdname=${0##*/}
 
-if [ "$1" = "php-fpm" ]; then
+usage()
+{
+    cat << USAGE >&2
+Usage:
+    $ACCUEIL_cmdname COMMAND
+
+Commands:
+    service     Start application service.
+    version     Show version information.
+USAGE
+    exit 1
+}
+
+service()
+{
     : "Cleanup ..." && {
         php artisan cache:clear --quiet --no-interaction
         php artisan config:clear --quiet --no-interaction
@@ -24,6 +36,43 @@ if [ "$1" = "php-fpm" ]; then
             php artisan view:cache --quiet --no-interaction
         fi
     }
-fi
+}
 
-exec "$@" & exec nginx -g "daemon off;"
+version()
+{
+    cat << VERSION >&2
+Application
+    base: $(php "${APP_ROOT}/artisan" --version)
+
+PHP
+$(php-fpm -v | sed "s/^/    /g")
+
+Nginx
+$(nginx -v 2>&1 | sed "s/^/    /g")
+VERSION
+    exit
+}
+
+# process arguments
+while [[ $# -gt 0 ]]
+do
+    case "$1" in
+        service )
+        service
+        exec php-fpm \
+            & exec nginx -g "daemon off;"
+        ;;
+        version )
+        version
+        ;;
+        "" )
+        usage
+        ;;
+        --help)
+        usage
+        ;;
+        *)
+        exec "$@"
+        ;;
+    esac
+done

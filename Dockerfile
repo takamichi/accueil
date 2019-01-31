@@ -419,6 +419,6 @@ RUN set -xe; \
     echo ${CODE_REVISION} > ${APP_ROOT}/REVISION;
 
 ENTRYPOINT ["entrypoint"]
-CMD ["php-fpm"]
+CMD ["service"]
 
 EXPOSE 80

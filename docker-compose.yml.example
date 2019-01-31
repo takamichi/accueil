@@ -19,7 +19,9 @@ services:
       PHP_XDEBUG_REMOTE_HOST: "host.docker.internal"
       #PHP_IDE_CONFIG: "serverName="
     expose:
-      - "9000"
+      - "80"
+    ports:
+      - "80:80"
     volumes:
       - .:${APP_ROOT}:cached
       - ./environment/php.ini:/usr/local/etc/php/php.ini:ro

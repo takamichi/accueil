@@ -1,72 +1,54 @@
 # syntax = docker/dockerfile:1.0-experimental
 
 #
-# Step 1: dockerize
-#
-
-FROM alpine:latest AS dockerize
-
-RUN set -xe; \
-    apk add --update --no-cache \
-        ca-certificates \
-        openssl
-
-ENV DOCKERIZE_VERSION v0.6.1
-RUN set -xe; \
-    : "Download \"dockerize\" ..."; \
-    wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz; \
-    tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz; \
-    chmod +x /usr/local/bin/dockerize; \
-    rm dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz;
-
-
-#
-# Step 2: PHP dependency packages
+# Stage `composer`: PHP dependency packages
 #
 
 FROM takamichi/composer:latest AS composer
 
 ENV APP_ROOT="/var/www/html"
 
-COPY . /app
+COPY composer.json composer.lock ${APP_ROOT}/
+# database dir require for autoload classmap
+COPY ./database ${APP_ROOT}/database
 
+WORKDIR ${APP_ROOT}
 RUN --mount=type=cache,target=/tmp/cache \
     set -xe; \
-    : "Create APP_ROOT directory ..."; \
-    mkdir -p ${APP_ROOT}; \
     : "Validate composer.json ..."; \
-    composer validate --strict --no-check-publish --no-interaction; \
+    composer validate --working-dir=${APP_ROOT} --strict --no-check-publish --no-interaction; \
     : "Install dependency packages ..."; \
     composer install \
+        --working-dir=${APP_ROOT} \
         --ignore-platform-reqs \
         --no-dev \
         --no-interaction \
         --no-progress \
         --no-scripts \
         --optimize-autoloader \
-        --prefer-dist; \
-    : "Copy application files ..."; \
-    cp -r /app/app ${APP_ROOT}/; \
-    cp -r /app/bootstrap ${APP_ROOT}/; \
-    cp -r /app/config ${APP_ROOT}/; \
-    cp -r /app/database ${APP_ROOT}/; \
-    cp -r /app/public ${APP_ROOT}/; \
-    cp -r /app/resources ${APP_ROOT}/; \
-    cp -r /app/src ${APP_ROOT}/; \
-    cp -r /app/storage ${APP_ROOT}/; \
-    cp -r /app/vendor ${APP_ROOT}/; \
-    cp /app/artisan ${APP_ROOT}/; \
-    : "Cleanup files and directories ..."; \
-    find \
+        --prefer-dist;
+
+COPY app ${APP_ROOT}/app
+COPY bootstrap ${APP_ROOT}/bootstrap
+COPY config ${APP_ROOT}/config
+COPY database ${APP_ROOT}/database
+COPY public ${APP_ROOT}/public
+COPY resources ${APP_ROOT}/resources
+COPY src ${APP_ROOT}/src
+COPY storage ${APP_ROOT}/storage
+COPY artisan ${APP_ROOT}/
+
+RUN : "Cleanup files and directories ..."; \
+    (find \
         "${APP_ROOT}/bootstrap/cache/" \
         "${APP_ROOT}/storage/" \
-        -type f -exec rm -f {} \; ;
+        -type f | xargs rm -f);
 
 VOLUME ["/tmp"]
 
 
 #
-# Step 3: Accueil docker image
+# Stage 1: Accueil docker image
 #
 
 FROM php:7.2.14-fpm-alpine3.8
@@ -406,14 +388,12 @@ COPY ./environment/php.ini ${PHP_INI_DIR}/php.ini
 COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./environment/nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
-COPY --from=composer ${APP_ROOT} ${APP_ROOT}
+COPY --chown=www-data:www-data --from=composer ${APP_ROOT} ${APP_ROOT}
 
 WORKDIR ${APP_ROOT}
 RUN set -xe; \
     : "Fix directory permissions ..."; \
     chmod -R 775 ${APP_ROOT}; \
-    chown -R www-data:www-data ${APP_ROOT}; \
     : "Set version and code revision files ..."; \
     echo ${VERSION} > ${APP_ROOT}/VERSION; \
     echo ${CODE_REVISION} > ${APP_ROOT}/REVISION;

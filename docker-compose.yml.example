@@ -60,6 +60,15 @@ services:
     volumes:
       - .:${APP_ROOT}:cached
 
+  node:
+    image: node:11
+    init: true
+    working_dir: ${APP_ROOT}
+    command: 'bash -c "yarn install --frozen-lockfile --non-interactive && yarn watch"'
+    volumes:
+      - .:${APP_ROOT}:cached
+      - cache:/usr/local/share/.cache/yarn/v1
+
 networks:
   accueil-network:
     driver: bridge

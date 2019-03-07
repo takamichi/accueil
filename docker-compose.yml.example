@@ -59,6 +59,7 @@ services:
     command: 'composer install --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist'
     volumes:
       - .:${APP_ROOT}:cached
+      - cache:/composer
 
   node:
     image: node:11

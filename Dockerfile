@@ -42,9 +42,33 @@ RUN : "Cleanup files and directories ..."; \
     (find \
         "${APP_ROOT}/bootstrap/cache/" \
         "${APP_ROOT}/storage/" \
-        -type f | xargs rm -f);
+        "${APP_ROOT}/public/css" \
+        "${APP_ROOT}/public/js" \
+        -type f | xargs rm -f); \
+    rm -f \
+        "${APP_ROOT}/public/storage" \
+        "${APP_ROOT}/public/mix-manifest.json";
 
 VOLUME ["/tmp"]
+
+
+FROM node:11 AS node
+
+ENV APP_ROOT="/var/www/html"
+
+COPY package.json yarn.lock ${APP_ROOT}/
+
+WORKDIR ${APP_ROOT}
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn/v1 \
+    set -xe; \
+    : "Install dependency packages ..."; \
+    yarn install --frozen-lockfile --non-interactive;
+
+COPY webpack.mix.js ${APP_ROOT}/
+COPY resources ${APP_ROOT}/resources
+RUN mkdir -p ${APP_ROOT}/public; \
+    : "Build frontend assets ..."; \
+    yarn production;
 
 
 #
@@ -389,6 +413,7 @@ COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./environment/nginx.conf /etc/nginx/nginx.conf
 
 COPY --chown=www-data:www-data --from=composer ${APP_ROOT} ${APP_ROOT}
+COPY --chown=www-data:www-data --from=node ${APP_ROOT}/public/** ${APP_ROOT}/public/
 
 WORKDIR ${APP_ROOT}
 RUN set -xe; \

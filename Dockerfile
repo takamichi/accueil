@@ -51,7 +51,7 @@ VOLUME ["/tmp"]
 # Stage 1: Accueil docker image
 #
 
-FROM php:7.2.14-fpm-alpine3.8
+FROM php:7.2.15-fpm-alpine3.8
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \
@@ -305,7 +305,7 @@ RUN set -xe; \
         rabbitmq-c-dev \
         yaml-dev; \
     \
-    apk add -U -X http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted gnu-libiconv; \
+    apk add -U --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community/gnu-libiconv=1.15-r2; \
     \
     docker-php-source extract; \
     \

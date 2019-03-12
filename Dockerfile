@@ -75,7 +75,7 @@ RUN mkdir -p ${APP_ROOT}/public; \
 # Stage 1: Accueil docker image
 #
 
-FROM php:7.2.15-fpm-alpine3.8
+FROM php:7.2.16-fpm-alpine3.8
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \

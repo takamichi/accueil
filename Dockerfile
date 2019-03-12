@@ -75,7 +75,7 @@ RUN mkdir -p ${APP_ROOT}/public; \
 # Stage 1: Accueil docker image
 #
 
-FROM php:7.2.16-fpm-alpine3.8
+FROM php:7.3.3-fpm-alpine3.9
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \
@@ -220,18 +220,18 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-ENV EXT_AMQP_VER="1.9.3" \
-    EXT_APCU_VER="5.1.12" \
+ENV EXT_AMQP_VER="1.9.4" \
+    EXT_APCU_VER="5.1.17" \
     EXT_AST_VER="1.0.0" \
     EXT_DS_VER="1.2.6" \
-    EXT_GRPC_VER="1.16.0" \
-    EXT_IGBINARY_VER="2.0.8" \
-    EXT_MEMCACHED_VER="3.0.4" \
+    EXT_GRPC_VER="1.17.0" \
+    EXT_IGBINARY_VER="3.0.0" \
+    EXT_MEMCACHED_VER="3.1.3" \
     EXT_MONGODB_VER="1.5.3" \
-    EXT_OAUTH_VER="2.0.2" \
+    EXT_OAUTH_VER="2.0.3" \
     EXT_REDIS_VER="4.2.0" \
     EXT_TIDEWAYS_XHPROF_VER="4.1.6" \
-    EXT_XDEBUG_VER="2.6.1" \
+    EXT_XDEBUG_VER="2.7.0" \
     EXT_YAML_VER="2.0.4" \
     PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT" \
     PHP_MAX_INPUT_TIME="60" \
@@ -305,6 +305,7 @@ RUN set -xe; \
         libmemcached-libs \
         libpng \
         libxslt \
+        libzip \
         make \
         mariadb-client \
         openssh-client \
@@ -325,6 +326,7 @@ RUN set -xe; \
         libpng-dev \
         libtool \
         libxslt-dev \
+        libzip-dev \
         pcre-dev \
         rabbitmq-c-dev \
         yaml-dev; \

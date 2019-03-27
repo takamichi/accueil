@@ -53,6 +53,17 @@ services:
       accueil-network:
     stop_grace_period: 1m
 
+  redis:
+    image: redis:5.0-alpine
+    expose:
+      - "6379"
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis-data:/data:cached
+    networks:
+      accueil-network:
+
   composer:
     image: takamichi/composer:latest
     working_dir: ${APP_ROOT}
@@ -78,6 +89,8 @@ volumes:
   db-data:
     driver: local
   db-log:
+    driver: local
+  redis-data:
     driver: local
   cache:
     driver: local

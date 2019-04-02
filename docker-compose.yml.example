@@ -23,7 +23,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .:${APP_ROOT}:cached
+      - ./backend:${APP_ROOT}:cached
+      - ./frontend/build:${APP_ROOT}/public/assets:cached
       - ./environment/php.ini:/usr/local/etc/php/php.ini:ro
       - ./environment/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
       - ./environment/dev/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini:ro
@@ -47,7 +48,7 @@ services:
     volumes:
       #- ./environment/dev/my.cnf:/etc/my.cnf:ro
       - ./environment/dev/sqls:/docker-entrypoint-initdb.d:ro
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/mysql:cached
       - db-log:/var/log/mysql
     networks:
       accueil-network:
@@ -69,7 +70,7 @@ services:
     working_dir: ${APP_ROOT}
     command: 'composer install --ignore-platform-reqs --no-interaction --no-scripts --prefer-dist'
     volumes:
-      - .:${APP_ROOT}:cached
+      - ./backend:${APP_ROOT}:cached
       - cache:/composer
 
   node:
@@ -78,7 +79,7 @@ services:
     working_dir: ${APP_ROOT}
     command: 'bash -c "yarn install --frozen-lockfile --non-interactive && yarn watch"'
     volumes:
-      - .:${APP_ROOT}:cached
+      - ./frontend:${APP_ROOT}:cached
       - cache:/usr/local/share/.cache/yarn/v1
 
 networks:

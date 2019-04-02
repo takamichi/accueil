@@ -1,16 +1,9 @@
-/node_modules
 
 /.idea
 /.vscode
 /.vagrant
 
-npm-debug.log
-yarn-error.log
 .env
 
-/package-lock.json
-/yarn.lock
-
 /composer.phar
-
 /docker-compose.yml

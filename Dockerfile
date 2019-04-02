@@ -8,9 +8,9 @@ FROM takamichi/composer:latest AS composer
 
 ENV APP_ROOT="/var/www/html"
 
-COPY composer.json composer.lock ${APP_ROOT}/
+COPY backend/composer.json backend/composer.lock ${APP_ROOT}/
 # database dir require for autoload classmap
-COPY ./database ${APP_ROOT}/database
+COPY ./backend/database ${APP_ROOT}/database
 
 WORKDIR ${APP_ROOT}
 RUN --mount=type=cache,target=/tmp/cache \
@@ -28,15 +28,15 @@ RUN --mount=type=cache,target=/tmp/cache \
         --optimize-autoloader \
         --prefer-dist;
 
-COPY app ${APP_ROOT}/app
-COPY bootstrap ${APP_ROOT}/bootstrap
-COPY config ${APP_ROOT}/config
-COPY database ${APP_ROOT}/database
-COPY public ${APP_ROOT}/public
-COPY resources ${APP_ROOT}/resources
-COPY src ${APP_ROOT}/src
-COPY storage ${APP_ROOT}/storage
-COPY artisan ${APP_ROOT}/
+COPY backend/app ${APP_ROOT}/app
+COPY backend/bootstrap ${APP_ROOT}/bootstrap
+COPY backend/config ${APP_ROOT}/config
+COPY backend/database ${APP_ROOT}/database
+COPY backend/public ${APP_ROOT}/public
+COPY backend/resources ${APP_ROOT}/resources
+COPY backend/src ${APP_ROOT}/src
+COPY backend/storage ${APP_ROOT}/storage
+COPY backend/artisan ${APP_ROOT}/
 
 RUN : "Cleanup files and directories ..."; \
     (find \

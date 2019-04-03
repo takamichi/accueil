@@ -8,9 +8,9 @@ FROM takamichi/composer:latest AS composer
 
 ENV APP_ROOT="/var/www/html"
 
-COPY composer.json composer.lock ${APP_ROOT}/
+COPY backend/composer.json backend/composer.lock ${APP_ROOT}/
 # database dir require for autoload classmap
-COPY ./database ${APP_ROOT}/database
+COPY ./backend/database ${APP_ROOT}/database
 
 WORKDIR ${APP_ROOT}
 RUN --mount=type=cache,target=/tmp/cache \
@@ -28,22 +28,21 @@ RUN --mount=type=cache,target=/tmp/cache \
         --optimize-autoloader \
         --prefer-dist;
 
-COPY app ${APP_ROOT}/app
-COPY bootstrap ${APP_ROOT}/bootstrap
-COPY config ${APP_ROOT}/config
-COPY database ${APP_ROOT}/database
-COPY public ${APP_ROOT}/public
-COPY resources ${APP_ROOT}/resources
-COPY src ${APP_ROOT}/src
-COPY storage ${APP_ROOT}/storage
-COPY artisan ${APP_ROOT}/
+COPY backend/app ${APP_ROOT}/app
+COPY backend/bootstrap ${APP_ROOT}/bootstrap
+COPY backend/config ${APP_ROOT}/config
+COPY backend/database ${APP_ROOT}/database
+COPY backend/public ${APP_ROOT}/public
+COPY backend/resources ${APP_ROOT}/resources
+COPY backend/src ${APP_ROOT}/src
+COPY backend/storage ${APP_ROOT}/storage
+COPY backend/artisan ${APP_ROOT}/
 
 RUN : "Cleanup files and directories ..."; \
     (find \
         "${APP_ROOT}/bootstrap/cache/" \
         "${APP_ROOT}/storage/" \
-        "${APP_ROOT}/public/css" \
-        "${APP_ROOT}/public/js" \
+        "${APP_ROOT}/public/assets" \
         -type f | xargs rm -f); \
     rm -f \
         "${APP_ROOT}/public/storage" \
@@ -56,7 +55,7 @@ FROM node:11 AS node
 
 ENV APP_ROOT="/var/www/html"
 
-COPY package.json yarn.lock ${APP_ROOT}/
+COPY frontend/package.json frontend/yarn.lock ${APP_ROOT}/
 
 WORKDIR ${APP_ROOT}
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn/v1 \
@@ -64,9 +63,11 @@ RUN --mount=type=cache,target=/usr/local/share/.cache/yarn/v1 \
     : "Install dependency packages ..."; \
     yarn install --frozen-lockfile --non-interactive;
 
-COPY webpack.mix.js ${APP_ROOT}/
-COPY resources ${APP_ROOT}/resources
-RUN mkdir -p ${APP_ROOT}/public; \
+COPY frontend/webpack.mix.js ${APP_ROOT}/
+COPY frontend/** ${APP_ROOT}/
+
+RUN : "Cleanup files and directories ..."; \
+    rm -rf ${APP_ROOT}/build; \
     : "Build frontend assets ..."; \
     yarn production;
 
@@ -414,7 +415,7 @@ COPY ./environment/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./environment/nginx.conf /etc/nginx/nginx.conf
 
 COPY --chown=www-data:www-data --from=composer ${APP_ROOT} ${APP_ROOT}
-COPY --chown=www-data:www-data --from=node ${APP_ROOT}/public/** ${APP_ROOT}/public/
+COPY --chown=www-data:www-data --from=node ${APP_ROOT}/build ${APP_ROOT}/public/assets
 
 WORKDIR ${APP_ROOT}
 RUN set -xe; \

@@ -76,7 +76,7 @@ RUN : "Cleanup files and directories ..."; \
 # Stage 1: Accueil docker image
 #
 
-FROM php:7.3.3-fpm-alpine3.9
+FROM php:7.3.6-fpm-alpine3.9
 MAINTAINER Takamichi Urata <taka@seraphimis.net>
 
 RUN set -xe; \
@@ -87,7 +87,7 @@ RUN set -xe; \
 ARG VERSION="dev"
 ARG CODE_REVISION="no-rev"
 
-ENV NGINX_VERSION 1.15.9
+ENV NGINX_VERSION 1.15.12
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && CONFIG="\
@@ -230,8 +230,8 @@ ENV EXT_AMQP_VER="1.9.4" \
     EXT_MEMCACHED_VER="3.1.3" \
     EXT_MONGODB_VER="1.5.3" \
     EXT_OAUTH_VER="2.0.3" \
-    EXT_REDIS_VER="4.2.0" \
-    EXT_XDEBUG_VER="2.7.0" \
+    EXT_REDIS_VER="4.3.0" \
+    EXT_XDEBUG_VER="2.7.2" \
     EXT_YAML_VER="2.0.4" \
     PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT" \
     PHP_MAX_INPUT_TIME="60" \
